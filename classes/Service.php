@@ -38,5 +38,15 @@ class Service {
             throw new Exception("Error deleting service: " . $e->getMessage());
         }
     }
+    public function search($term){
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM services WHERE title LIKE ? OR description LIKE ?");
+            $wildcard = "%$term%";
+            $stmt->execute([$wildcard, $wildcard]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error searching services: " . $e->getMessage());
+        }
+    }
 }
 ?>

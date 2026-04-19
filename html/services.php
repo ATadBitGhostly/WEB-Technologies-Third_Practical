@@ -1,5 +1,4 @@
 <?php
-// 1. Path Fixes: Go up one level to find the classes folder
 require_once __DIR__ . '/../classes/Database.php';
 require_once __DIR__ . '/../classes/Service.php';
 
@@ -12,14 +11,8 @@ $searchTerm = $_GET['search'] ?? '';
 $services = [];
 
 if (!empty($searchTerm)) {
-    // If searching, we'll use a manual query here since your class doesn't have a search method yet
-    // Or you can add a search method to your Service class (recommended)
-    $stmt = $conn->prepare("SELECT * FROM services WHERE title LIKE ? OR description LIKE ?");
-    $wildcard = "%$searchTerm%";
-    $stmt->execute([$wildcard, $wildcard]);
-    $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $services = $serviceManager->search($searchTerm);
 } else {
-    // 5.1 Fetching all services dynamically using the class
     $services = $serviceManager->readAll();
 }
 ?>
