@@ -23,9 +23,6 @@ class Message {
     public function create(string $name, string $email, string $message): bool {
         $sql = "INSERT INTO {$this->table} (name, email, message) VALUES (:name, :email, :message)";
         
-        echo "CREATE FUNCTION CALLED";
-        exit;
-
         $stmt = $this->conn->prepare($sql);
 
         return $stmt->execute([

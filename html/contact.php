@@ -86,7 +86,20 @@
                     <div class="col-lg-6 col-md-6 my-1">
                         <div class="card shadow-sm p-4 text-center">
                             <!-- Contact Form -->
-                            <form id="contactForm" novalidate>
+                            
+                            <?php if ($error): ?>
+                            <div class="alert alert-danger">
+                                <?= $error ?>
+                            </div>
+                            <?php endif; ?>
+
+                            <?php if ($success): ?>
+                            <div class="alert alert-success">
+                                <?= $success ?>
+                            </div>
+                            <?php endif; ?>
+
+                            <form id="contactForm" method="POST" action="contact.php" novalidate>
                                 <h2 class="mb-4">Send us a message</h2>
                                 
                                 <div class="mb-3 w-100">
