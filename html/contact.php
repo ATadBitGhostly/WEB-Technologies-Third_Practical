@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,23 +27,32 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="index.php" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="about.html" class="nav-link">About</a>
+                        <a href="about.php" class="nav-link">About</a>
                     </li>
                     <li class="nav-item">
-                        <a href="services.html" class="nav-link">Services</a>
+                        <a href="services.php" class="nav-link">Services</a>
                     </li>
                     <li class="nav-item">
                         <a href="contact.html" class="nav-link active" aria-current="page">Contact</a>
                     </li>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <li class="nav-item">
+                        <a href="dashboard.php" class="nav-link">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="logout.php" class="nav-link">Logout</a>
+                    </li>
+                    <?php else: ?>
                     <li class="nav-item">
                         <a href="register.php" class="nav-link">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a href="login.php" class="nav-link">Login/Dashboard</a>
+                        <a href="login.php" class="nav-link">Login</a>
                     </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
