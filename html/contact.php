@@ -12,6 +12,39 @@
     <title>Contact - Sports Page 101</title>
 </head>
 <body>
+
+    <?php
+    
+    require_once '../includes/db.php';
+    require_once '../classess/Message.php';
+
+    $messageObj = new Message($conn);
+
+    $success = "";
+    $error = "";
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        $name = trim($_POST["name"]);
+        $email = trim($_POST["email"]);
+        $message = trim($_POST["message"]);
+
+        $validationError = $messageObj->validate($name, $email, $message);
+
+        if ($validationError) {
+            $error = $validationError;
+        } else {
+            if ($messageObj->create($name, $email, $message)) {
+                $success = "Message Sent!";
+            } else {
+                $error = "Failed to send message.";
+            }
+        }
+
+    }
+    
+    ?>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-slightyDarkBlue">
 
         <div class="container-fluid">
@@ -24,16 +57,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="index.php" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="about.html" class="nav-link">About</a>
+                        <a href="about.php" class="nav-link">About</a>
                     </li>
                     <li class="nav-item">
-                        <a href="services.html" class="nav-link">Services</a>
+                        <a href="services.php" class="nav-link">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a href="contact.html" class="nav-link active" aria-current="page">Contact</a>
+                        <a href="contact.php" class="nav-link active" aria-current="page">Contact</a>
                     </li>
                 </ul>
             </div>

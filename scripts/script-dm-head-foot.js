@@ -27,25 +27,32 @@ footer.addEventListener('mouseleave', function() {
 })
 
 
-const btn = document.getElementById('themeToggler');
-const darkIcon = document.getElementById('dark-mode-icon');
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById('themeToggler');
+    const darkIcon = document.getElementById('dark-mode-icon');
 
-btn.addEventListener('click', function() {
-    document.body.classList.toggle('dark-mode');
+    // Apply saved theme
+    const savedTheme = localStorage.getItem('theme');
 
-    if (document.body.classList.contains('dark-mode')) {
-        darkIcon.classList.remove('bi-moon-stars')
-        darkIcon.classList.add('bi-sun');
-        localStorage.setItem('theme', 'dark');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        darkIcon.classList.replace('bi-moon-stars', 'bi-sun');
     } else {
-        darkIcon.classList.add('bi-moon-stars')
-        darkIcon.classList.remove('bi-sun');
-        localStorage.setItem('theme-icon', 'dark');
+        document.body.classList.remove('dark-mode');
+        darkIcon.classList.replace('bi-sun', 'bi-moon-stars');
     }
-});
 
-if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark-mode');
-    darkIcon.classList.remove('bi-moon-stars')
-    darkIcon.classList.add('bi-sun');
-}
+    btn.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark-mode');
+
+        if (isDark) {
+            localStorage.setItem('theme', 'dark');
+            darkIcon.classList.replace('bi-moon-stars', 'bi-sun');
+        } else {
+            localStorage.setItem('theme', 'light');
+            darkIcon.classList.replace('bi-sun', 'bi-moon-stars');
+        }
+
+        console.log("Theme now:", localStorage.getItem('theme')); // debug
+    });
+});
