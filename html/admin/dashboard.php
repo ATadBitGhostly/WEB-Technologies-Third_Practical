@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../../classes/Database.php';
 require_once __DIR__ . '/../../classes/Service.php';
-require_once "./includes/db.php";
 
 $db = new Database();
 $conn = $db->connect();

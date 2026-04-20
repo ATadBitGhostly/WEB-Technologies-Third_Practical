@@ -24,13 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Passwords do not match";
     }
     if (empty($errors)) {
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
+        $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
         $stmt->execute([$Username, $Email]);
         if ($stmt->fetch()) {
             $errors[] = "Username or email already exists";
         } else{
             $Hashed = password_hash($Password, PASSWORD_DEFAULT);
-            $Insert = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+            $Insert = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
             $Insert->execute([$Username, $Email, $Hashed]);
             setcookie("remember_user", $Username, time() + (86000 * 30), "/");
 

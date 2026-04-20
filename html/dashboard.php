@@ -13,7 +13,7 @@ exit;
 if (isset($_GET['delete_id'])) {
     $id = $_GET['delete_id'];
 
-    $stmt = $pdo->prepare("DELETE FROM services WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM services WHERE id = ?");
     $stmt->execute([$id]);
 
     header("Location: dashboard.php?deleted=1");
@@ -22,7 +22,7 @@ if (isset($_GET['delete_id'])) {
 
 $username = $_SESSION['username'];
 
-$stmt = $pdo->query('SELECT * FROM services');
+$stmt = $conn->query('SELECT * FROM services');
 $services = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
@@ -137,7 +137,7 @@ $services = $stmt->fetchAll();
                                 <td><?= htmlspecialchars($service['description']) ?></td>
                                 <td>
                                     <?php if ($service['image']): ?>
-                                        <img src="../images/<?= htmlspecialchars($service['image']) ?>"
+                                        <img src="../<?= htmlspecialchars($service['image']) ?>"
                                              alt="<?= htmlspecialchars($service['title']) ?>"
                                              style="height: 50px; object-fit: cover;">
                                     <?php else: ?>
