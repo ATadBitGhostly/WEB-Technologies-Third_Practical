@@ -15,6 +15,39 @@ session_start();
     <title>Contact - Sports Page 101</title>
 </head>
 <body>
+
+    <?php
+    
+    require_once '../includes/db.php';
+    require_once '../classess/Message.php';
+
+    $messageObj = new Message($conn);
+
+    $success = "";
+    $error = "";
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        $name = trim($_POST["name"]);
+        $email = trim($_POST["email"]);
+        $message = trim($_POST["message"]);
+
+        $validationError = $messageObj->validate($name, $email, $message);
+
+        if ($validationError) {
+            $error = $validationError;
+        } else {
+            if ($messageObj->create($name, $email, $message)) {
+                $success = "Message Sent!";
+            } else {
+                $error = "Failed to send message.";
+            }
+        }
+
+    }
+    
+    ?>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-slightyDarkBlue">
 
         <div class="container-fluid">
@@ -71,7 +104,20 @@ session_start();
                     <div class="col-lg-6 col-md-6 my-1">
                         <div class="card shadow-sm p-4 text-center">
                             <!-- Contact Form -->
-                            <form id="contactForm" novalidate>
+                            
+                            <?php if ($error): ?>
+                            <div class="alert alert-danger">
+                                <?= $error ?>
+                            </div>
+                            <?php endif; ?>
+
+                            <?php if ($success): ?>
+                            <div class="alert alert-success">
+                                <?= $success ?>
+                            </div>
+                            <?php endif; ?>
+
+                            <form id="contactForm" method="POST" action="contact.php" novalidate>
                                 <h2 class="mb-4">Send us a message</h2>
                                 
                                 <div class="mb-3 w-100">
