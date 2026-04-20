@@ -36,7 +36,7 @@ session_start();
                         <a href="services.php" class="nav-link">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a href="contact.html" class="nav-link active" aria-current="page">Contact</a>
+                        <a href="contact.php" class="nav-link active" aria-current="page">Contact</a>
                     </li>
                     <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item">

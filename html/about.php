@@ -30,7 +30,7 @@ session_start();
                         <a href="index.php" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="about.html" class="nav-link active" aria-current="page">About</a>
+                        <a href="about.php" class="nav-link active" aria-current="page">About</a>
                     </li>
                     <li class="nav-item">
                         <a href="services.php" class="nav-link">Services</a>

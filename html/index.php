@@ -27,7 +27,7 @@ session_start();
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link active" aria-current="page">Home</a>
+                        <a href="index.php" class="nav-link active" aria-current="page">Home</a>
                     </li>
                     <li class="nav-item">
                         <a href="about.php" class="nav-link">About</a>

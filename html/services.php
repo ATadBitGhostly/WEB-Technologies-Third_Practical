@@ -1,5 +1,21 @@
 <?php
 session_start();
+require_once __DIR__ . '/../classes/Database.php';
+require_once __DIR__ . '/../classes/Service.php';
+
+$db = new Database();
+$conn = $db->connect();
+$serviceManager = new Service($conn);
+
+// 5.3 Logic: Handle Search Input
+$searchTerm = $_GET['search'] ?? '';
+$services = [];
+
+if (!empty($searchTerm)) {
+    $services = $serviceManager->search($searchTerm);
+} else {
+    $services = $serviceManager->readAll();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +49,7 @@ session_start();
                         <a href="about.php" class="nav-link">About</a>
                     </li>
                     <li class="nav-item">
-                        <a href="services.html" class="nav-link active" aria-current="page">Services</a>
+                        <a href="services.php" class="nav-link active" aria-current="page">Services</a>
                     </li>
                     <li class="nav-item">
                         <a href="contact.php" class="nav-link">Contact</a>
@@ -65,78 +81,56 @@ session_start();
                 <p class="lead mt-3">Here you can find information about our services and offerings at Sports Page 101.</p>
             </div>
         </section>
+        
         <hr class="container my-0">
 
-
         <section class="py-4">
-            <div class="container d-flex gap-3 flex-wrap">
-                <input type="text" id="search-input" class="form-control w-auto flex-grow-1" placeholder="Search services...">
-                <select id="category-select" class="form-select w-auto">
-                    <option value="all">All Categories</option>
-                    <option value="live">Live & Real-Time</option>
-                    <option value="news">News & Analysis</option>
-                    <option value="data">Data & Stats</option>
-                    <option value="media">Media & Highlights</option>
-                    <option value="schedule">Schedule & Events</option>
-                </select>
+            <div class="container">
+                <form action="services.php" method="GET" class="d-flex gap-3">
+                    <input type="text" name="search" id="search-input" 
+                           class="form-control w-auto flex-grow-1" 
+                           placeholder="Search services..." 
+                           value="<?= htmlspecialchars($searchTerm) ?>">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <?php if(!empty($searchTerm)): ?>
+                        <a href="services.php" class="btn btn-secondary">Clear</a>
+                    <?php endif; ?>
+                </form>
             </div>
         </section>
-
 
         <section class="py-5">
             <div class="container">
                 <div class="row justify-content-center text-center" id="services-grid">
- 
-                    <div class="col-lg-3 col-md-6 my-2" data-category="live" data-keywords="live scores real-time leagues tournaments">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <img src="../images/live-scores.png" alt="Live Scores Icon" class="service-images">
-                                <h2>Live Scores</h2>
-                                <p>Stay up to date with real-time scores from your favourite sports leagues and tournaments around the world, all in one place.</p>
-                            </div>
+                    
+                    <?php if (empty($services)): ?>
+                        <div class="col-12">
+                            <p class="text-muted">No services found matching your search.</p>
                         </div>
-                    </div>
- 
-                    <div class="col-lg-3 col-md-6 my-2" data-category="news" data-keywords="sports news breaking analysis articles previews">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <img src="../images/news.png" alt="Sports News Icon" class="service-images">
-                                <h2>Sports News</h2>
-                                <p>Get the latest breaking news, match previews, post-game analysis, and in-depth articles covering all major sports.</p>
+                    <?php else: ?>
+                        <?php foreach ($services as $s): ?>
+                            <div class="col-lg-3 col-md-6 my-2">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                        <?php 
+                                            // Handle the image path correctly
+                                            // DB saves "images\news.png", we are in "html/services.php"
+                                            // We need to go up one level to root, then into images
+                                            $imgSrc = "../" . str_replace('\\', '/', $s['image']);
+                                        ?>
+                                        <img src="<?= htmlspecialchars($imgSrc) ?>" 
+                                             alt="<?= htmlspecialchars($s['title']) ?> Icon" 
+                                             class="service-images mb-3" 
+                                             style="max-height: 100px; width: auto;">
+                                        
+                                        <h2 class="h4"><?= htmlspecialchars($s['title']) ?></h2>
+                                        <p class="card-text"><?= htmlspecialchars($s['description']) ?></p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
- 
-                    <div class="col-lg-3 col-md-6 my-2" data-category="data" data-keywords="player team stats statistics data season">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <img src="../images/stats.jpg" alt="Player Stats Icon" class="service-images">
-                                <h2>Player & Team Stats</h2>
-                                <p>Explore comprehensive statistics for players and teams across multiple sports, updated throughout every season.</p>
-                            </div>
-                        </div>
-                    </div>
- 
-                    <div class="col-lg-3 col-md-6 my-2" data-category="media" data-keywords="match highlights video goals plays moments">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <img src="../images/highlights.png" alt="Highlights Icon" class="service-images">
-                                <h2>Match Highlights</h2>
-                                <p>Never miss a moment — catch up on the best plays, goals, and highlights from recent matches and events.</p>
-                            </div>
-                        </div>
-                    </div>
- 
-                    <div class="col-lg-3 col-md-6 my-2" data-category="schedule" data-keywords="event schedule fixtures upcoming calendar tournaments">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <img src="../images/schedule.png" alt="Schedule Icon" class="service-images">
-                                <h2>Event Schedule</h2>
-                                <p>Browse upcoming fixtures, game times, and tournament schedules so you never miss a match that matters to you.</p>
-                            </div>
-                        </div>
-                    </div>
- 
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
                 </div>
             </div>
         </section>
