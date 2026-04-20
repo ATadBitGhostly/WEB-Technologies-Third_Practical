@@ -18,8 +18,8 @@ session_start();
 
     <?php
     
-    require_once '../includes/db.php';
-    require_once '../classess/Message.php';
+    require_once __DIR__ . '/../includes/db.php';
+    require_once __DIR__ . '/../classes/Message.php';
 
     $messageObj = new Message($conn);
 
