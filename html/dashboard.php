@@ -8,6 +8,18 @@ header('Location: login.php');
 exit;
 }
 
+
+// delete function
+if (isset($_GET['delete_id'])) {
+    $id = $_GET['delete_id'];
+
+    $stmt = $pdo->prepare("DELETE FROM services WHERE id = ?");
+    $stmt->execute([$id]);
+
+    header("Location: dashboard.php?deleted=1");
+    exit();
+}
+
 $username = $_SESSION['username'];
 
 $stmt = $pdo->query('SELECT * FROM services');
@@ -98,7 +110,7 @@ $services = $stmt->fetchAll();
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>All Services</h2>
-                <a href="add_service.php" class="btn btn-primary">
+                <a href="./admin/add_service.php" class="btn btn-primary">
                     <i class="bi bi-plus-lg"></i> Add Service
                 </a>
             </div>
@@ -133,10 +145,10 @@ $services = $stmt->fetchAll();
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <a href="edit_service.php?id=<?= $service['id'] ?>" class="btn btn-sm btn-warning me-1">
+                                    <a href="./admin/edit_service.php?id=<?= $service['id'] ?>" class="btn btn-sm btn-warning me-1">
                                         <i class="bi bi-pencil"></i> Edit
                                     </a>
-                                    <a href="delete_service.php?id=<?= $service['id'] ?>"
+                                    <a href="dashboard.php?delete_id=<?= $service['id'] ?>"
                                        class="btn btn-sm btn-danger"
                                        onclick="return confirm('Delete this service?')">
                                         <i class="bi bi-trash"></i> Delete

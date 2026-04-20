@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     try {
         $serviceManager->create($_POST['title'], $_POST['description'], $_POST['image']);
-        header("Location: dashboard.php");
+        header("Location: ../dashboard.php");
         exit();
     } catch (Exception $e) {
         $error = $e->getMessage();
@@ -27,6 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" name="image" placeholder="Image URL/Path"><br><br>
         <button type="submit">Create Service</button>
     </form>
-    <a href="dashboard.php">Back to Dashboard</a>
+    <a href="../dashboard.php">Back to Dashboard</a>
 </body>
 </html>

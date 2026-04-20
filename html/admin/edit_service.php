@@ -13,7 +13,7 @@ if (!$id) header("Location: dashboard.php");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $serviceManager->update($id, $_POST['title'], $_POST['description']);
-        header("Location: dashboard.php");
+        header("Location: ../dashboard.php");
         exit();
     } catch (Exception $e) {
         $error = $e->getMessage();
@@ -36,6 +36,6 @@ $current = $stmt->fetch();
         <textarea name="description" required><?= htmlspecialchars($current['description']) ?></textarea><br><br>
         <button type="submit">Update Service</button>
     </form>
-    <a href="dashboard.php">Cancel</a>
+    <a href="../dashboard.php">Cancel</a>
 </body>
 </html>
