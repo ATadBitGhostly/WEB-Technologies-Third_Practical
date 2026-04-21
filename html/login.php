@@ -2,10 +2,6 @@
 session_start();
 require_once("../includes/db.php");
 
-if (isset($_SESSION['user_id'])) {
-    header('Location: dashboard.php'); // Dashboard needed
-    exit;
-}
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
